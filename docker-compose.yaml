@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  ai-server:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - AI_PROVIDER=openai
+      - OPENAI_API_KEY=your_openai_api_key_here
+      - DEFAULT_MODEL=gpt-4o-mini
+      - DEFAULT_SWIFT_MODEL=gpt-4o-mini
+    restart: unless-stopped
+
+  # Optional: Ollama service
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  ollama_data:

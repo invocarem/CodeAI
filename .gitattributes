@@ -1,0 +1,13 @@
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Always use LF line endings for these file types
+*.swift text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+
+# Binary files should not be modified
+*.png binary
+*.jpg binary
+*.pdf binary

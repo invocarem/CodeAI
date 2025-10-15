@@ -1,0 +1,28 @@
+# Xcode
+DerivedData/
+*.xcuserstate
+Pods/
+
+.continue/agents/*
+
+# macOS
+.DS_Store
+
+#dock
+.build/
+.vscode/
+.test_logs/
+
+build/
+
+.env
+*.swp
+*.bak
+
+# generated output file
+output_*
+**/psalms.json
+**/themes.json
+
+**/psalm_progress.json
+
