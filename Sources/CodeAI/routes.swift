@@ -3,7 +3,7 @@ import Vapor
 func routes(_ app: Application) throws
 {
   let aiClient = AIClient(app)
-
+  print("DEBUG: Registering /health route...") 
   // Health check
   app.get("health")
   { _ -> HealthResponse in

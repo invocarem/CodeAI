@@ -1,18 +1,58 @@
 version: '3.8'
 
 services:
-  ai-server:
-    build: .
+  # Development service
+  ai-server-dev:
+    build:
+      context: .
+      target: dev  # Use the dev stage from Dockerfile
+    ports:
+      - "5000:5000"
+    env_file: .env
+    environment:
+      - ENV=development
+      - HOST=0.0.0.0
+      - PORT=5000
+      - AI_PROVIDER=ollama
+      - OLLAMA_BASE_URL=http://localhost:11434
+      - OPENAI_API_KEY=your_openai_api_key_here
+      - DEFAULT_MODEL=gpt-4o-mini
+      - DEFAULT_SWIFT_MODEL=gpt-4o-mini
+    volumes:
+      - .:/app  # Mount local code for live reloading
+    restart: unless-stopped
+
+  # Testing service
+  ai-server-test:
+    build:
+      context: .
+      target: test  # Use the test stage from Dockerfile
+    environment:
+      - ENV=testing
+      - AI_PROVIDER=openai
+      - OPENAI_API_KEY=your_openai_api_key_here
+      - DEFAULT_MODEL=gpt-4o-mini
+      - DEFAULT_SWIFT_MODEL=gpt-4o-mini
+    volumes:
+      - .:/app  # Mount local code for running tests
+    command: swift test  # Explicitly run tests
+
+  # Production service
+  ai-server-prod:
+    build:
+      context: .
+      target: prod  # Use the prod stage from Dockerfile
     ports:
       - "8080:8080"
     environment:
+      - ENV=production
       - AI_PROVIDER=openai
       - OPENAI_API_KEY=your_openai_api_key_here
       - DEFAULT_MODEL=gpt-4o-mini
       - DEFAULT_SWIFT_MODEL=gpt-4o-mini
     restart: unless-stopped
 
-  # Optional: Ollama service
+  # Optional: Ollama service (unchanged)
   ollama:
     image: ollama/ollama:latest
     ports:
