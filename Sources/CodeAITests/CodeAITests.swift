@@ -31,4 +31,14 @@ final class CodeAITests: XCTestCase
       XCTAssertFalse(models.data.isEmpty)
     }
   }
+
+  
+
+}
+
+
+extension XCTestCase {
+    func XCTAssertContains(_ string: String, _ substring: String, file: StaticString = #file, line: UInt = #line) {
+        XCTAssertTrue(string.contains(substring), "Expected '\(string)' to contain '\(substring)'", file: file, line: line)
+    }
 }

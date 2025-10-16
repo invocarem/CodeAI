@@ -3,6 +3,10 @@ import Vapor
 func routes(_ app: Application) throws
 {
   let aiClient = AIClient(app)
+  print("DEBUG: AI Provider: \(Config.aiProvider)")
+  print("DEBUG: API Endpoint: \(Config.getApiEndpoint())") 
+  print("DEBUG: Is Configured: \(Config.isConfigured())")
+  print("DEBUG: OLLAMA_BASE_URL env: \(Environment.get("OLLAMA_BASE_URL") ?? "NOT SET")")
   print("DEBUG: Registering /health route...") 
   // Health check
   app.get("health")

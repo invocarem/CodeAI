@@ -115,9 +115,10 @@ final class AIClient {
     if let apiKey = apiKey {
       headers.add(name: "Authorization", value: "Bearer \(apiKey)")
     }
+    app.logger.debug("!! DEBUG: Ollama messages count: \(messages.count)")
 
     let prompt = messagesToPrompt(messages: messages)
-
+    app.logger.debug("DEBUG: Ollama prompt: \(prompt)")
     let payload: [String: Any] = [
       "model": model,
       "prompt": prompt,

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Development service
   ai-server-dev:
@@ -12,6 +10,10 @@ services:
     volumes:
       - .:/app  # Mount local code for live reloading
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
 
   # Testing service
   ai-server-test:
@@ -19,10 +21,9 @@ services:
       context: .
       target: test  # Use the test stage from Dockerfile
     env_file: .env
-    
     volumes:
       - .:/app  # Mount local code for running tests
-    command: swift test  # Explicitly run tests
+    command: swift test 
 
   # Production service
   ai-server-prod:
@@ -34,5 +35,3 @@ services:
       - "5000:5000"
     restart: unless-stopped
 
-volumes:
-  ollama_data:

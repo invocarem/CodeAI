@@ -9,7 +9,8 @@ enum Config
   static let aiProvider = Environment.get("AI_PROVIDER") ?? "openai"
   static let openAIApiKey = Environment.get("OPENAI_API_KEY")
   static let mistralApiKey = Environment.get("MISTRAL_API_KEY")
-  static let ollamaEndpoint = Environment.get("OLLAMA_ENDPOINT") ?? "http://localhost:11434/api/generate"
+
+  static let ollamaBaseUrl = Environment.get("OLLAMA_BASE_URL") ?? "http://localhost:11434"
 
   // Server Configuration
   static let host = Environment.get("HOST") ?? "0.0.0.0"
@@ -34,7 +35,7 @@ enum Config
     case "mistral":
       return "https://api.mistral.ai/v1/chat/completions"
     case "ollama":
-      return ollamaEndpoint
+      return "\(ollamaBaseUrl)/v1/chat/completions"
     default:
       return "https://api.openai.com/v1/chat/completions"
     }

@@ -185,6 +185,19 @@ The response will contain the cleaned Swift code wrapped in a markdown code bloc
 
 ## Troubleshooting
 
+
+check 
+```bash
+$ docker-compose exec ai-server-dev env | grep OLLAMA
+time="2025-10-16T16:08:06-06:00" level=warning msg="C:\\code\\github\\codeai\\docker-compose.yaml: `version` is obsolete"
+OLLAMA_BASE_URL=http://host.docker.internal:11434
+```
+
+
+```bash
+curl -X POST http://localhost:5000/renumber-verses   -H "Content-Type: application/json"   -d @input.json -o output.json
+```
+
 - If `AI_PROVIDER=openai` or `mistral` make sure the corresponding API key env var is set (`OPENAI_API_KEY` or `MISTRAL_API_KEY`).
 - For Ollama, ensure `OLLAMA_ENDPOINT` points to a reachable running Ollama HTTP server.
 - Use `GET /health` to verify which provider the server thinks it's configured to use.
