@@ -21,6 +21,8 @@ build/
 
 # generated output file
 output_*
+output.json
+chat-output.json
 **/psalms.json
 **/themes.json
 

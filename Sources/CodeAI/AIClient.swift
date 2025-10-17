@@ -103,54 +103,48 @@ final class AIClient {
   }
 
   // MARK: - Ollama provider
-
-  private func callOllama(
+private func callOllama(
     messages: [Message],
     model: String,
     maxTokens: Int,
     temperature: Double
-  ) async throws -> String {
+) async throws -> String {
     var headers = HTTPHeaders()
     headers.add(name: "Content-Type", value: "application/json")
-    if let apiKey = apiKey {
-      headers.add(name: "Authorization", value: "Bearer \(apiKey)")
-    }
-    app.logger.debug("!! DEBUG: Ollama messages count: \(messages.count)")
-
-    let prompt = messagesToPrompt(messages: messages)
-    app.logger.debug("DEBUG: Ollama prompt: \(prompt)")
+    
+    app.logger.debug("DEBUG: Ollama messages count: \(messages.count)")
+    
+    // Use the same format as OpenAI for Ollama's chat completions
     let payload: [String: Any] = [
-      "model": model,
-      "prompt": prompt,
-      "max_tokens": maxTokens,
-      "temperature": temperature,
-      "stream": false,
+        "model": model,
+        "messages": messages.map { ["role": $0.role, "content": $0.content] },
+        "max_tokens": maxTokens,
+        "temperature": temperature,
+        "stream": false,
     ]
-
+    
     app.logger.debug("Calling Ollama at \(endpoint) with model \(model)")
-
-    // Convert payload to JSON data
+    
     let jsonData = try JSONSerialization.data(withJSONObject: payload)
-
+    
     let response = try await app.client.post(URI(string: endpoint)) { req in
-      req.headers = headers
-      req.body = ByteBuffer(data: jsonData)
+        req.headers = headers
+        req.body = ByteBuffer(data: jsonData)
     }
-
-    guard response.status == HTTPResponseStatus.ok
-    else {
-      let errorDetail: String
-      if let body = response.body, let data = body.getData(at: body.readerIndex, length: body.readableBytes) {
-        errorDetail = String(data: data, encoding: .utf8) ?? "<non-utf8 body>"
-      } else {
-        errorDetail = "<no body>"
-      }
-      throw Abort(.internalServerError, reason: "Ollama returned \(response.status.code): \(errorDetail)")
+    
+    guard response.status == HTTPResponseStatus.ok else {
+        let errorDetail: String
+        if let body = response.body, let data = body.getData(at: body.readerIndex, length: body.readableBytes) {
+            errorDetail = String(data: data, encoding: .utf8) ?? "<non-utf8 body>"
+        } else {
+            errorDetail = "<no body>"
+        }
+        throw Abort(.internalServerError, reason: "Ollama returned \(response.status.code): \(errorDetail)")
     }
-
+    
     return try parseOllamaResponse(response: response)
-  }
-
+}
+ 
   private func parseOllamaResponse(response: ClientResponse) throws -> String {
     guard let body = response.body,
           let data = body.getData(at: body.readerIndex, length: body.readableBytes),

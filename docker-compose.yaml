@@ -23,7 +23,14 @@ services:
     env_file: .env
     volumes:
       - .:/app  # Mount local code for running tests
-    command: swift test 
+    working_dir: /app
+    stdin_open: true  # Keep STDIN open
+    tty: true         # Allocate a pseudo-TTY
+    command: /bin/bash
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
 
   # Production service
   ai-server-prod:
