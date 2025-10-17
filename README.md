@@ -195,7 +195,8 @@ OLLAMA_BASE_URL=http://host.docker.internal:11434
 
 
 ```bash
-curl -X POST http://localhost:5000/renumber-verses   -H "Content-Type: application/json"   -d @input.json -o output.json
+curl -X POST http://localhost:5000/renumber-verses   -H "Content-Type: application/json"   -d @./Tests/CodeAITests/Resources/api-input.json
+
 ```
 
 - If `AI_PROVIDER=openai` or `mistral` make sure the corresponding API key env var is set (`OPENAI_API_KEY` or `MISTRAL_API_KEY`).
