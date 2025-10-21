@@ -211,3 +211,20 @@ curl -X POST http://localhost:5000/renumber-verses   -H "Content-Type: applicati
 ## License
 
 This repository is provided as-is. Adjust and extend for your deployment needs.
+
+
+```
+HOSTNAME=0.0.0.0
+PORT=5000
+#AI_PROVIDER=mistral
+#AI_PROVIDER=ollama
+MISTRAL_API_KEY=lAbgnma92xW1VqLxsuLCasdb0tB8mhSq
+#DEFAULT_MODEL=mistral-small-latest
+
+ENV=development
+
+AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://host.docker.internal:11434
+DEFAULT_MODEL=mistral:latest
+DEFAULT_SWIFT_MODEL=deepseek-coder:6.7b
+```
